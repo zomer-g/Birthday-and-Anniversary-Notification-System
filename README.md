@@ -38,6 +38,9 @@ The script assumes the following structure for the "DATA" sheet:
 - **Column L**: Past event date, such as a discharge date (Date format).
 - **Column O**: List of recipient email addresses separated by commas.
 
+google sheet template
+https://docs.google.com/spreadsheets/d/1fOt3jrJQq5QgzecFDt-m9KkKY07bnxpLvk83gvf1-q0/edit?gid=1858501632#gid=1858501632
+
 ## Script Functions
 
 ### `checkBirthdaysAndAnniversaries`
