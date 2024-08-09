@@ -14,6 +14,8 @@ This Google Apps Script automates the process of sending birthday and anniversar
   - [sendAnniversaryNotification](#sendanniversarynotification)
   - [createTrigger](#createtrigger)
   - [deleteTriggers](#deletetriggers)
+  - [hebrewdateAPI onetime.js](#hebrewdateapi-onetimejs)
+  - [hebrewdatealerts daily.js](#hebrewdatealerts-dailyjs)
 - [Installation and Setup](#installation-and-setup)
 - [Customization](#customization)
 - [License](#license)
@@ -26,6 +28,7 @@ The system is designed to automate the sending of birthday and anniversary notif
 
 - **Birthday Notifications**: Sends an email when today's date matches the birthdate of a person listed in the Google Sheet.
 - **Anniversary Notifications**: Sends an email when today's date matches a past event date (X years ago) for a person listed in the Google Sheet.
+- **Hebrew Date Conversion**: Converts Gregorian birthdates to Hebrew dates and stores them in the Google Sheet.
 - **Automated Triggers**: The script is designed to run daily using a time-based trigger.
 - **Customizable Messages**: The content of the email notifications can be easily customized.
 
@@ -36,10 +39,11 @@ The script assumes the following structure for the "DATA" sheet:
 - **Column A**: Name of the person.
 - **Column K**: Birthdate of the person (Date format).
 - **Column L**: Past event date, such as a discharge date (Date format).
+- **Column N**: Hebrew birthdate (automatically populated by the script).
 - **Column O**: List of recipient email addresses separated by commas.
 
-google sheet template
-https://docs.google.com/spreadsheets/d/1fOt3jrJQq5QgzecFDt-m9KkKY07bnxpLvk83gvf1-q0/edit?gid=1858501632#gid=1858501632
+Google Sheet template:
+[Google Sheet Template](https://docs.google.com/spreadsheets/d/1fOt3jrJQq5QgzecFDt-m9KkKY07bnxpLvk83gvf1-q0/edit?gid=1858501632#gid=1858501632)
 
 ## Script Functions
 
@@ -64,18 +68,25 @@ Sets up a daily time-based trigger to run the `checkBirthdaysAndAnniversaries` f
 ### `deleteTriggers`
 Deletes all existing triggers for the project to avoid multiple triggers running the same function.
 
+### `hebrewdateAPI onetime.js`
+This script is designed to be run once after updating or adding birthdates in the Google Sheet. It automatically converts the Gregorian birthdates in column K to Hebrew dates using the Hebcal API and writes the converted Hebrew dates to column N. This allows the system to use the Hebrew birthdates for daily checks and notifications.
+
+### `hebrewdatealerts daily.js`
+This script is designed to run daily and checks if today's Hebrew date matches any Hebrew birthdates in column N of the Google Sheet. If a match is found, it sends a birthday notification email to the recipients listed in column O. The email includes the Hebrew birthdate and uses rich Hebrew language to celebrate the occasion.
+
 ## Installation and Setup
 
 1. **Create or Open the Google Sheet**: Ensure that you have a Google Sheet named "DATA" with the required structure.
 2. **Create a New Google Apps Script Project**: Open the Script Editor from your Google Sheet by navigating to `Extensions > Apps Script`.
-3. **Copy and Paste the Script**: Copy the entire script provided in this README and paste it into the Script Editor.
-4. **Save and Authorize**: Save the script and authorize it to access your Google Sheet and send emails on your behalf.
-5. **Set Up Triggers**: Run the `createTrigger` function manually once to set up the daily trigger.
+3. **Copy and Paste the Scripts**: Copy the scripts provided in this README (or from your project) and paste them into the Script Editor.
+4. **Save and Authorize**: Save the scripts and authorize them to access your Google Sheet and send emails on your behalf.
+5. **Run the `hebrewdateAPI onetime.js` Script**: Run this script manually after updating birthdates to convert them to Hebrew dates.
+6. **Set Up Triggers**: Run the `createTrigger` function from the `hebrewdatealerts daily.js` script to set up the daily trigger.
 
 ## Customization
 
 - **Change the Notification Time**: Modify the hour in the `createTrigger` function to adjust when the script runs each day.
-- **Customize Email Content**: Modify the text in the `sendBirthdayNotification` and `sendAnniversaryNotification` functions to personalize the messages.
+- **Customize Email Content**: Modify the text in the `sendBirthdayNotification`, `sendAnniversaryNotification`, and `sendHebrewBirthdayNotification` functions to personalize the messages.
 - **Adjust Columns**: If your Google Sheet structure differs, update the column indices in the script accordingly.
 
 ## License
